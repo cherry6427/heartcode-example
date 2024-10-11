@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { toast, useToast } from "@/hooks/use-toast";
-import { Key } from "lucide-react";
+import { insertOneUser } from "@/server/user";
 
 const FormSchema = z.object({
 	name: z.string({
@@ -30,40 +30,36 @@ const FormSchema = z.object({
 })
  
 export default function Quiz() {
-	const { toast } = useToast();
+  const { toast } = useToast();
+	
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      name: "",
+    },
+  })
 
-	const form = useForm<z.infer<typeof FormSchema>>({
-    	resolver: zodResolver(FormSchema)
-	})
-
-  function showToast(isCorrect: boolean, name: string) {
-    const title = isCorrect ? `Congratulations ${name}` : `Sorry ${name}`;
-    const description = isCorrect ? "You are correct" : "Unfortunately you are not correct";
-    
-    toast({
-        title,
-        description,
-    });
+      // 2. Define a submit handler.
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    if (data.question2=="None of the above" && data.question3=="Use of drugs for purposes other than those for which they are meant to be used or in excessive amounts" && data.question4=="All of the above") {
+      toast({
+        title: `Congratulations ${data.name}`,
+        description: "You are correct",
+      })
+    } else {
+      toast({
+        title: `Thank you ${data.name}`,
+        description: "Unfortunately you are not correct",
+      })
+    console.log(data);
   }
-
-	function onSubmit(data: z.infer<typeof FormSchema>) {
-    	toast({
-        	title: "hello",
-        	description: "You have submitted the quiz... validating",
-    	})
-    	console.log(data);
-      const answers: { [key in keyof typeof FormSchema]: string } = {
-        question2: "None of the above",
-        question3: "Use of drugs for purposes other than those for which they are meant to be used or in excessive amounts",
-        question4: "All of the above"
-    };
-
-    /// Validate each question
-    for (const [key, correctAnswer] of Object.entries(answers) as [keyof typeof FormSchema, string][]) {
-      showToast(data[key] === correctAnswer, data.name);
-  }
-}
  
+  await insertOneUser(data.name, data.question2, data.question3, data.question4)
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w2/3 space-y-6">

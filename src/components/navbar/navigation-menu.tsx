@@ -29,7 +29,7 @@ export function NavigationBar() {
                 </Link>
             </NavigationMenuItem>
             </div>
-            <div className="flex flex-row">
+            <div className="flex flex-row gap-4">
             <ModeToggle/>
             <SignedOut>
                 <SignInButton />
