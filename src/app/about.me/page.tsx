@@ -71,9 +71,11 @@ export default function aboutme() {
               <img src="https://media.tenor.com/C0UG450EpqkAAAAi/saltando-meme.gif" alt="yippee catto"></img>
             </CarouselItem>
           </CarouselContent>
-          <CarouselPrevious onClick={handlePrev}/>
-          <CarouselNext onClick={handleNext}/>
+          <CarouselPrevious />
+          <CarouselNext />
         </Carousel>
+        <button onClick={handlePrev}>Previous</button>
+        <button onClick={handleNext}>Next</button>
       </Card>
     </div>
   );
