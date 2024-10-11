@@ -25,7 +25,7 @@ export default function aboutme() {
       setShowConfetti(true);
       const timer = setTimeout(() => {
         setShowConfetti(false);
-      }, 3000); // Show confetti for 3 seconds
+      }, 5000); // Show confetti for 3 seconds
 
       return () => clearTimeout(timer);
     }
@@ -71,11 +71,9 @@ export default function aboutme() {
               <img src="https://media.tenor.com/C0UG450EpqkAAAAi/saltando-meme.gif" alt="yippee catto"></img>
             </CarouselItem>
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious onClick={handlePrev}/>
+          <CarouselNext onClick={handleNext}/>
         </Carousel>
-        <button onClick={handlePrev}>Previous</button>
-        <button onClick={handleNext}>Next</button>
       </Card>
     </div>
   );
